@@ -4,30 +4,49 @@ using UnityEngine;
 
 public class GraphScript : MonoBehaviour {
 
-    public float scale;
-    public string units;
+    public float graph_size = 20.0f;
+    public float object_scale = 0.1f;
 
-    private float DEFAULT_SCALE = 10f;
-    private string DEFAULT_UNITS = "units";
+    //public float[] mins;
+    //public float[] maxes;
 
-    GraphScript()
+    public Dictionary<string, float> maxes = new Dictionary<string, float>()
     {
-        this.scale = DEFAULT_SCALE;
-        this.units = DEFAULT_UNITS;
+        { "x", 0.0f },
+        { "y", 0.0f },
+        { "z", 0.0f }
+    };
+
+    public Dictionary<string, float> mins = new Dictionary<string, float>()
+    {
+        { "x", float.MaxValue },
+        { "y", float.MaxValue },
+        { "z", float.MaxValue }
+    };
+
+    // A list of Data objects
+
+    public int num_data = 0;
+    public List<GameObject> dataCollection;
+
+    // Use this for initialization
+    void Start()
+    {
+        dataCollection = new List<GameObject>();
     }
 
-    public string get_units()
+    public void AddData(GameObject data)
     {
-        return this.units;
+        dataCollection.Add(data);
+        num_data++;
     }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public void ChangeScale(float scale)
+    {
+        float pre_scaling_size = object_scale / scale;
+        foreach (GameObject data in dataCollection)
+        {
+            data.transform.localScale *= scale;
+        }
+    }
 }
